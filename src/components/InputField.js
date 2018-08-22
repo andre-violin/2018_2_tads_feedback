@@ -19,7 +19,8 @@ const InputField = props => {
         style={ __input } 
         id={ props.identificador } 
         type={ props.tipo } 
-        placeholder={ props.textoAuxiliar } />
+        placeholder={ props.textoAuxiliar }
+        onChange={ props.alterar } />
     </div>
   )
 }
