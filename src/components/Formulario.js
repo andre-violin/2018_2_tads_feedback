@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import InputField from './InputField'
+import { firestore } from '../firebase/firebase'
 
 export default class Formulario extends Component {
   constructor( props ) {
@@ -14,6 +15,7 @@ export default class Formulario extends Component {
 
   salvarDados = ( event ) => {
     event.preventDefault()
+    firestore.collection( 'feedbacks' ).add( this.state )
     console.log( this.state )
   }
 
