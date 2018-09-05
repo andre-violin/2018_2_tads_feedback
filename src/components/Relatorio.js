@@ -1,22 +1,45 @@
-import React from "react"
+import React, { Component } from 'react'
 
 import { firestore } from '../firebase/firebase'
-import dados from "../data.json"
 import Card from "./Card"
 
-const info = firestore.collection( 'feedbacks' ).doc( 'p9ZyPFK784CCvzmpmYmQ' )
+class Relatorio extends Component {
 
-console.log( info )
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+       feedbacks: [],
+       error: null
+    }
+  }
+  
+  componentWillMount = () => {
+    firestore.collection('feedbacks')
+      .onSnapshot( collection => {
+        this.setState({
+          feedbacks: collection.docs.map( doc => doc.data() )
+        })
+      },
+      err => {
+        console.log(err)
+      })
+  }
+  
 
-const mostraDados = dado => 
-    <Card key={dado.id} nome={dado.nome} comentario={dado.comentario} />
- 
+  mostraDados = (dado, index) => 
+    <Card key={ index } nome={dado.email} comentario={dado.comentario} />
 
-const Relatorio = () => 
-  <div>
-    <h1>Relatório</h1>
-    {dados.map(dado => mostraDados(dado))}
-  </div>
+  render() {
+    return (
+      <div>
+        <h1>Relatório</h1>
+          { this.state.feedbacks.map( (dado, index) => this.mostraDados(dado, index)) }
+      </div>
+    )
+  }
+}
 
+  
 
 export default Relatorio
